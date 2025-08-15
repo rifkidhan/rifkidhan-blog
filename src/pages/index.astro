@@ -1,0 +1,20 @@
+---
+import Layout from "$/layouts/Layout.astro";
+import BlogList from "$/components/BlogList.astro";
+---
+
+<Layout>
+	<section class="min-h-[30rem] w-full">
+		<h1>
+			<span class="text-8xl font-semibold">Halo!</span>
+			<span>Nama saya </span>
+		</h1>
+	</section>
+	<section class="flex flex-col gap-4">
+		<div class="flex flex-col border-t px-4 pt-6 pb-4">
+			<h2 class="text-4xl font-semibold">Blog</h2>
+			<div>Semua yang bisa saya bagikan.</div>
+		</div>
+		<BlogList />
+	</section>
+</Layout>

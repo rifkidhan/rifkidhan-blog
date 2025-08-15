@@ -1,0 +1,23 @@
+---
+import { TITLE } from "$/utils/constants";
+import SocialLinks from "./SocialLinks.astro";
+import ThemeSwitch from "./ThemeSwitch.astro";
+
+const date = new Date();
+---
+
+<footer class="w-full border-t border-zinc-500">
+	<div
+		class="mx-4 grid grid-cols-2 divide-x border-x *:px-4 *:py-2 lg:mx-6 lg:grid-cols-3 lg:*:py-4"
+	>
+		<div>
+			<ThemeSwitch />
+		</div>
+		<div
+			class="order-last col-span-2 flex w-full flex-row items-center border-t text-sm md:order-none lg:col-span-1 lg:border-t-0"
+		>
+			<span>&copy; {date.getFullYear()}, {TITLE}.</span>
+		</div>
+		<SocialLinks />
+	</div>
+</footer>

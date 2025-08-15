@@ -1,0 +1,40 @@
+@import "tailwindcss";
+@import "./prose.css" layer(components);
+
+:root {
+	color-scheme: light dark;
+}
+[data-theme="dark"] {
+	color-scheme: dark;
+}
+[data-theme="light"] {
+	color-scheme: light;
+}
+
+@theme inline {
+	--font-sans: var(--font-pjs);
+	--font-sans--font-feature-settings: "ss01", "ss02", "ss03";
+}
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@layer base {
+	button:not(:disabled),
+	[role="button"]:not(:disabled) {
+		cursor: pointer;
+	}
+}
+
+@utility scrollbar {
+	@supports (scrollbar-width: auto) {
+		scrollbar-width: thin;
+		scrollbar-color: var(--color-amber-600) transparent;
+		scrollbar-gutter: stable;
+	}
+}
+
+@utility scrollbar-hidden {
+	@supports (scrollbar-width: auto) {
+		scrollbar-width: none;
+	}
+}

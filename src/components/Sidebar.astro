@@ -1,0 +1,20 @@
+---
+import type { TOCProps } from "$/utils/generateToc";
+import MobileTableOfContents from "./MobileTableOfContents.astro";
+import TableOfContents from "./TableOfContents.astro";
+
+type Props = TOCProps;
+
+const { headings, title } = Astro.props;
+---
+
+<div class="contents">
+	<div class="fixed inset-x-4 top-10 block border-x bg-zinc-100 lg:hidden dark:bg-zinc-900">
+		<MobileTableOfContents headings={headings} title={title} />
+	</div>
+	<div
+		class="scrollbar sticky top-12 hidden h-[calc(100dvh-(var(--spacing)*18))] overflow-y-auto px-4 lg:block"
+	>
+		<TableOfContents headings={headings} title={title} />
+	</div>
+</div>

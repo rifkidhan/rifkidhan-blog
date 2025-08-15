@@ -1,0 +1,24 @@
+---
+import type { TOCProps } from "$/utils/generateToc";
+import { generateToc } from "$/utils/generateToc";
+import TocList from "./TOC/TocList.astro";
+
+type Props = TOCProps;
+
+const { headings, title } = Astro.props;
+
+const toc = generateToc(headings, title);
+---
+
+{
+	toc && toc.length > 0 && (
+		<rifkidhan-toc>
+			<nav id="toc" class="flex flex-col gap-2">
+				<h2 class="py-1 text-xl font-semibold">Daftar Konten</h2>
+				<TocList toc={toc} />
+			</nav>
+		</rifkidhan-toc>
+	)
+}
+
+<script src="./TOC/toc.ts"></script>

@@ -1,0 +1,76 @@
+---
+import { Image } from "astro:assets";
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import Layout from "$/layouts/Layout.astro";
+import FormattedDate from "$/components/FormattedDate.astro";
+import Sidebar from "$/components/Sidebar.astro";
+
+type Props = CollectionEntry<"blog">;
+
+export async function getStaticPaths() {
+	const blog = await getCollection("blog");
+
+	return blog.map((post) => ({
+		params: { slug: post.id },
+		props: post,
+	}));
+}
+
+const post = Astro.props;
+
+const { Content, headings } = await render(post);
+const data = post.data;
+---
+
+<Layout title={data.title} description={data.description} image={data.heroImage}>
+	<div class="relative grid grid-cols-1 divide-x lg:grid-cols-3">
+		<aside class="relative">
+			<Sidebar headings={headings} title={data.title} />
+		</aside>
+		<article class="lg:col-span-2">
+			<div class="mt-14 mb-10 flex flex-col gap-5 px-4 lg:mt-16 lg:gap-10">
+				<hgroup>
+					<h1 id="_top" class="text-3xl font-semibold tracking-tight text-balance lg:text-5xl">
+						{data.title}
+					</h1>
+					<p class="mt-5 text-lg text-pretty text-zinc-800 lg:text-xl dark:text-zinc-200">
+						{data.description}
+					</p>
+					<div
+						class="grid grid-cols-1 gap-4 text-sm text-zinc-600 uppercase md:grid-cols-2 lg:grid-cols-3 dark:text-zinc-400"
+					>
+						<div>
+							<span>dipublikasi:</span>
+							<FormattedDate date={data.pubDate} />
+						</div>
+						{
+							data.updateDate && (
+								<div>
+									<span>diperbarui:</span>
+									<FormattedDate date={data.pubDate} />
+								</div>
+							)
+						}
+					</div>
+				</hgroup>
+				<div></div>
+				{
+					data.heroImage && (
+						<div class="flex flex-col gap-2">
+							<Image src={data.heroImage} alt={data.title} layout="constrained" priority />
+							{data.heroImage_caption && (
+								<div
+									class="ml-2 text-sm text-zinc-600 dark:text-zinc-400"
+									set:html={data.heroImage_caption}
+								/>
+							)}
+						</div>
+					)
+				}
+			</div>
+			<div class="prose">
+				<Content />
+			</div>
+		</article>
+	</div>
+</Layout>

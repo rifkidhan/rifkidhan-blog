@@ -1,0 +1,143 @@
+<div class="flex flex-row items-center gap-4">
+	<label for="theme-switch">Theme</label>
+	<button
+		id="theme-switch"
+		type="button"
+		role="switch"
+		value="auto"
+		aria-live="polite"
+		aria-checked="false"
+		class="inline-flex h-6 w-9 shrink-0 items-center border border-transparent bg-zinc-400 transition-all duration-300 ease-in-out outline-none motion-reduce:transition-none dark:bg-amber-400"
+	>
+		<span
+			class="pointer-events-none inline-flex size-5 translate-x-0 items-center justify-center bg-zinc-900 ring-0 transition-transform duration-300 ease-in-out motion-reduce:transition-none dark:translate-x-[calc(100%-6px)]"
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="24"
+				height="24"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				aria-hidden="true"
+				class="inline-blok size-[calc(100%-4px)] stroke-zinc-100 dark:hidden"
+			>
+				<circle cx="12" cy="12" r="4"></circle>
+				<path d="M12 2v2"></path>
+				<path d="M12 20v2"></path>
+				<path d="m4.93 4.93 1.41 1.41"></path>
+				<path d="m17.66 17.66 1.41 1.41"></path>
+				<path d="M2 12h2"></path>
+				<path d="M20 12h2"></path>
+				<path d="m6.34 17.66-1.41 1.41"></path>
+				<path d="m19.07 4.93-1.41 1.41"></path>
+			</svg>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="24"
+				height="24"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				aria-hidden="true"
+				class="hidden size-[calc(100%-4px)] stroke-zinc-100 dark:inline-block"
+			>
+				<path
+					d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"
+				></path>
+			</svg>
+		</span>
+	</button>
+</div>
+
+<script is:inline>
+	const storageKey = "rifkidhan:theme";
+	let loading = true;
+
+	const getColorPreference = () => {
+		if (localStorage.getItem(storageKey)) return localStorage.getItem(storageKey);
+		else return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+	};
+
+	const theme = {
+		value: getColorPreference(),
+	};
+
+	const reflectPreference = () => {
+		const mutate = () => {
+			document.firstElementChild.setAttribute("data-theme", theme.value);
+
+			document.querySelector("#theme-switch")?.setAttribute("value", theme.value);
+			document
+				.querySelector("#theme-switch")
+				?.setAttribute("aria-checked", theme.value === "dark" ? "true" : false);
+		};
+
+		if (!loading && document.startViewTransition) document.startViewTransition(() => mutate());
+		else mutate();
+	};
+
+	const setPreference = () => {
+		localStorage.setItem(storageKey, theme.value);
+		reflectPreference();
+	};
+
+	const onClick = () => {
+		theme.value = theme.value === "light" ? "dark" : "light";
+
+		setPreference();
+	};
+
+	// set early so no page flashes / CSS is made aware
+	reflectPreference();
+
+	window.onload = () => {
+		// set on load so screen readers can see latest value on the button
+		reflectPreference();
+
+		// now this script can find and listen for clicks on the control
+		document.querySelector("#theme-switch").addEventListener("click", onClick);
+
+		// Restore :root have a viewTransitionName
+		document.documentElement.style.viewTransitionName = "root";
+		loading = false;
+	};
+
+	// sync with system changes
+	window
+		.matchMedia("(prefers-color-scheme: dark)")
+		.addEventListener("change", ({ matches: isDark }) => {
+			theme.value = isDark ? "dark" : "light";
+			setPreference();
+		});
+</script>
+
+<style is:global>
+	/* sourced from https://transition.style */
+	@keyframes circle-in-top-right {
+		from {
+			clip-path: circle(0%);
+		}
+		to {
+			clip-path: circle(150% at top right);
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		@media (width <= 1600px) {
+			::view-transition-old(root) {
+				animation: none;
+			}
+
+			::view-transition-new(root) {
+				animation: 2s cubic-bezier(0.25, 1, 0.3, 1) circle-in-top-right forwards;
+			}
+		}
+	}
+</style>

@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+
+const posts = (
+	await getCollection("blog", ({ data }) => {
+		if (import.meta.env.DEV) {
+			return true;
+		}
+		return data.published;
+	})
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<div
+	class="grid w-full grid-cols-1 divide-y border-t lg:grid-cols-3 lg:[&>:not(:nth-child(3))]:border-r"
+	role="list"
+>
+	{
+		posts.map((item) => (
+			<article role="listitem" class="grid grid-cols-subgrid gap-2 px-4 py-4">
+				<h3 class="text-xl font-semibold">{item.data.title}</h3>
+				<p class="min-h-[6ch]">{item.data.description}</p>
+				<a
+					href={`/blog/${item.id}`}
+					class="font-semibold underline decoration-amber-400 underline-offset-3 hover:decoration-2"
+				>
+					Lihat selengkapnya
+				</a>
+			</article>
+		))
+	}
+</div>

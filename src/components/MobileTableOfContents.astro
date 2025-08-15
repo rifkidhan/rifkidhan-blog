@@ -1,0 +1,73 @@
+---
+import type { TOCProps } from "$/utils/generateToc";
+import { generateToc } from "$/utils/generateToc";
+import TocList from "./TOC/TocList.astro";
+
+type Props = TOCProps;
+
+const { headings, title } = Astro.props;
+
+const toc = generateToc(headings, title);
+---
+
+{
+	toc && (
+		<rifkidhan-mobiletoc>
+			<nav class="w-full border-b">
+				<details class="flex flex-col gap-2 px-4 py-1">
+					<summary class="flex gap-2">
+						<span>Daftar Konten:</span>
+						<span id="current-toc" />
+					</summary>
+					<div class="scrollbar max-h-[calc(80dvh-2rem)] overflow-y-auto">
+						<TocList toc={toc} />
+					</div>
+				</details>
+			</nav>
+		</rifkidhan-mobiletoc>
+	)
+}
+
+<script>
+	import { TableOfContent } from "./TOC/toc";
+
+	class MobileTableOfContent extends TableOfContent {
+		override set current(link: HTMLAnchorElement) {
+			super.current = link;
+			const current_toc = this.querySelector<HTMLSpanElement>("#current-toc");
+			if (current_toc) current_toc.textContent = link.textContent;
+		}
+
+		constructor() {
+			super();
+			const details = this.querySelector("details");
+			if (!details) return;
+
+			const close = () => {
+				details.open = false;
+			};
+
+			for (const link of details.querySelectorAll("a")) {
+				link.addEventListener("click", close);
+			}
+
+			window.addEventListener("click", (e) => {
+				if (!details.contains(e.target as Node)) close();
+			});
+
+			window.addEventListener("keydown", (e) => {
+				if (e.key === "Escape" && details.open) {
+					const focus = details.contains(document.activeElement);
+					close();
+
+					if (focus) {
+						const summary = details.querySelector("summary");
+						if (summary) summary.focus();
+					}
+				}
+			});
+		}
+	}
+
+	customElements.define("rifkidhan-mobiletoc", MobileTableOfContent);
+</script>

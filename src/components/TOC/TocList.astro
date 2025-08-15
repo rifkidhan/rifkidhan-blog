@@ -1,0 +1,37 @@
+---
+import type { TocItem } from "$/utils/generateToc";
+
+interface Props {
+	toc: TocItem[];
+	depth?: number;
+}
+
+const { toc, depth = 0 } = Astro.props;
+---
+
+<ul
+	class:list={[
+		"flex flex-col gap-2 border-l text-zinc-800 dark:text-zinc-200",
+		{ "border-transparent": depth >= 1 },
+	]}
+>
+	{
+		toc.map((heading) => (
+			<li class="-ml-[1px] flex flex-col gap-1">
+				<a
+					href={"#" + heading.slug}
+					class:list={[
+						"block underline-offset-3 hover:underline hover:decoration-amber-600 aria-[current]:border-l-3 aria-[current]:text-amber-600",
+						{ "font-semibold": depth === 0 },
+						{ "pl-4": depth === 0 },
+						{ "pl-6": depth >= 1 },
+					]}
+				>
+					<span>{heading.text}</span>
+				</a>
+
+				{heading.subheading.length > 0 && <Astro.self toc={heading.subheading} depth={depth + 1} />}
+			</li>
+		))
+	}
+</ul>
