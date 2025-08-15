@@ -38,7 +38,7 @@
 					"level": "on",
 					"options": {
 						"groups": [
-							[":NODE:"],
+							[":NODE:", ":BUN:"],
 							[":PACKAGE:", ":PACKAGE_WITH_PROTOCOL:"],
 							["$/layouts/**"],
 							["$/lib/**", "$/utils/**"],

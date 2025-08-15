@@ -8,7 +8,12 @@ import Sidebar from "$/components/Sidebar.astro";
 type Props = CollectionEntry<"blog">;
 
 export async function getStaticPaths() {
-	const blog = await getCollection("blog");
+	const blog = await getCollection("blog", ({ data }) => {
+		if (import.meta.env.DEV) {
+			return true;
+		}
+		return data.published;
+	});
 
 	return blog.map((post) => ({
 		params: { slug: post.id },

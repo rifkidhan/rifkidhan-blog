@@ -6,10 +6,13 @@ import sectionize from "@hbsnow/rehype-sectionize";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, fontProviders } from "astro/config";
 
+const NETLIFY_PREVIEW_SITE = process.env.CONTEXT !== "production" && process.env.DEPLOY_PRIME_URL;
+
 // https://astro.build/config
 export default defineConfig({
-	site: "https://rifkidhan.my.id",
+	site: NETLIFY_PREVIEW_SITE || "https://rifkidhan.my.id",
 	integrations: [mdx(), sitemap()],
+	trailingSlash: "ignore",
 	image: {
 		layout: "constrained",
 		breakpoints: [640, 828, 1280, 1668],
@@ -19,6 +22,9 @@ export default defineConfig({
 			footnoteLabel: "Catatan Kaki",
 		},
 		rehypePlugins: [sectionize],
+	},
+	build: {
+		format: "file",
 	},
 	prefetch: {
 		prefetchAll: true,

@@ -5,7 +5,6 @@ pubDate: "Jun 19 2024"
 updateDate: "Aug 11 2025"
 heroImage: "$/assets/sam-goodgame.jpg"
 heroImage_caption: "Photo by Sam Goodgame on Unsplash."
-published: true
 ---
 
 Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.

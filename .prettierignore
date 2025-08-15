@@ -10,6 +10,7 @@ public
 
 # Files
 pnpm-lock.yaml
+bun.lock
 
 # Formatted by Biome
 **/*.json
