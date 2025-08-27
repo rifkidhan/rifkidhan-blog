@@ -77,7 +77,9 @@ export class TableOfContent extends HTMLElement {
 		const observe = () => {
 			if (observer) return;
 			observer = new IntersectionObserver(setCurrent, { rootMargin: this.#getRootMargin() });
-			toObserve.forEach((h) => observer!.observe(h));
+			for (const obs of toObserve) {
+				observer.observe(obs);
+			}
 		};
 
 		observe();

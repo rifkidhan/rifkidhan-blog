@@ -52,6 +52,7 @@
 		color: var(--prose-code-color);
 		font-weight: var(--font-weight-semibold);
 		margin-top: calc(var(--spacing) * 16);
+		font-feature-settings: "ss01", "ss02", "ss03";
 	}
 
 	& > :first-child {

@@ -13,7 +13,7 @@
 
 @theme inline {
 	--font-sans: var(--font-pjs);
-	--font-sans--font-feature-settings: "ss01", "ss02", "ss03";
+	--font-sans--font-feature-settings: "ss02", "ss03";
 }
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
@@ -37,4 +37,8 @@
 	@supports (scrollbar-width: auto) {
 		scrollbar-width: none;
 	}
+}
+
+@utility font-lancip {
+	font-feature-settings: "ss01", "ss02", "ss03";
 }

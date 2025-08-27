@@ -4,7 +4,7 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import sectionize from "@hbsnow/rehype-sectionize";
 import tailwindcss from "@tailwindcss/vite";
-import { defineConfig, fontProviders } from "astro/config";
+import { defineConfig } from "astro/config";
 
 const NETLIFY_PREVIEW_SITE = process.env.CONTEXT !== "production" && process.env.DEPLOY_PRIME_URL;
 
@@ -23,9 +23,6 @@ export default defineConfig({
 		},
 		rehypePlugins: [sectionize],
 	},
-	build: {
-		format: "file",
-	},
 	prefetch: {
 		prefetchAll: true,
 	},
@@ -35,11 +32,23 @@ export default defineConfig({
 	experimental: {
 		fonts: [
 			{
-				provider: fontProviders.google(),
+				provider: "local",
 				name: "Plus Jakarta Sans",
 				cssVariable: "--font-pjs",
-				weights: ["200 800"],
-				subsets: ["latin"],
+				variants: [
+					{
+						src: ["./src/assets/PlusJakartaSans.woff2"],
+						weight: "200 800",
+						style: "normal",
+						display: "swap",
+					},
+					{
+						src: ["./src/assets/PlusJakartaSans-Italic.woff2"],
+						weight: "200 800",
+						style: "italic",
+						display: "swap",
+					},
+				],
 			},
 		],
 		contentIntellisense: true,

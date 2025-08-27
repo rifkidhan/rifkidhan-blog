@@ -4,17 +4,20 @@ import BlogList from "$/components/BlogList.astro";
 ---
 
 <Layout>
-	<section class="min-h-[30rem] w-full">
-		<h1>
-			<span class="text-8xl font-semibold">Halo!</span>
-			<span>Nama saya </span>
-		</h1>
+	<h1 class="sr-only">Rifkidhan blog</h1>
+	<section class="flex flex-col gap-6 border-b px-4 py-6">
+		<h2 class="font-lancip text-4xl font-semibold">Intro</h2>
+		<div>
+			Saya tidak tau harus bilang apa karena saya baru belajar menulis. Akan tetapi sebagai
+			pengenalan, nama saya Rifki Ramadhan. Saya adalah seorang developer amatir yang ingin belajar
+			beberapa hal mengenai beberapa pemrograman. Dan, selamat datang!
+		</div>
 	</section>
 	<section class="flex flex-col gap-4">
-		<div class="flex flex-col border-t px-4 pt-6 pb-4">
-			<h2 class="text-4xl font-semibold">Blog</h2>
-			<div>Semua yang bisa saya bagikan.</div>
+		<div class="flex flex-col gap-6 px-4 pt-6 pb-4">
+			<h2 class="font-lancip text-4xl font-semibold">Blog</h2>
+			<div>Sedikit pratinjau dari hal yang bisa saya bagikan.</div>
 		</div>
-		<BlogList />
+		<BlogList length={2} />
 	</section>
 </Layout>

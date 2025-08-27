@@ -1,7 +1,14 @@
 ---
 import { getCollection } from "astro:content";
+import FormattedDate from "./FormattedDate.astro";
 
-const posts = (
+interface Props {
+	length?: number;
+}
+
+const { length } = Astro.props;
+
+let posts = (
 	await getCollection("blog", ({ data }) => {
 		if (import.meta.env.DEV) {
 			return true;
@@ -9,24 +16,33 @@ const posts = (
 		return data.published;
 	})
 ).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+if (length) {
+	posts = posts.slice(0, length);
+}
 ---
 
-<div
-	class="grid w-full grid-cols-1 divide-y border-t lg:grid-cols-3 lg:[&>:not(:nth-child(3))]:border-r"
-	role="list"
->
+<ul class="grid w-full grid-cols-1 divide-y border-t lg:grid-cols-3">
 	{
 		posts.map((item) => (
-			<article role="listitem" class="grid grid-cols-subgrid gap-2 px-4 py-4">
-				<h3 class="text-xl font-semibold">{item.data.title}</h3>
-				<p class="min-h-[6ch]">{item.data.description}</p>
-				<a
-					href={`/blog/${item.id}`}
-					class="font-semibold underline decoration-amber-400 underline-offset-3 hover:decoration-2"
-				>
-					Lihat selengkapnya
-				</a>
-			</article>
+			<li class="grid grid-cols-subgrid *:px-4 *:py-2 lg:col-span-3 lg:divide-x lg:divide-y-0 lg:*:p-4">
+				<FormattedDate
+					date={item.data.pubDate}
+					class="font-lancip text-zinc-700 dark:text-zinc-300"
+				/>
+				<article class="lg:col-span-2">
+					<h3 class="font-lancip text-xl font-semibold">
+						<a href={`/blog/${item.id}`}>{item.data.title}</a>
+					</h3>
+					<p class="min-h-[6ch]">{item.data.description}</p>
+					<a
+						href={`/blog/${item.id}`}
+						class="font-semibold underline decoration-amber-400 underline-offset-3 hover:decoration-2"
+					>
+						Lihat selengkapnya
+					</a>
+				</article>
+			</li>
 		))
 	}
-</div>
+</ul>
